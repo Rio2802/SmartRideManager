@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { useBike } from '../context/BikeContext';
 
 const BikesScreen = ({ navigation }) => {

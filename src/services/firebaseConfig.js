@@ -22,4 +22,22 @@ const auth = initializeAuth(app, {
 const db = getFirestore(app);
 const storage = getStorage(app);
 
+// Firestore offline persistence:
+// - React Native/Mobile: Automatic offline support is built-in by default
+// - Web: Requires explicit enableIndexedDbPersistence call
+// - Additional AsyncStorage caching is implemented in firestoreService.js for extra reliability
+try {
+  if (typeof window !== 'undefined' && typeof window.indexedDB !== 'undefined') {
+    enableIndexedDbPersistence(db).catch((err) => {
+      if (err.code === 'failed-precondition') {
+        console.warn('Firestore persistence failed: Multiple tabs open');
+      } else if (err.code === 'unimplemented') {
+        console.warn('Firestore persistence not available in this browser');
+      }
+    });
+  }
+} catch (error) {
+  console.warn('Firestore persistence setup failed:', error);
+}
+
 export { app, auth, db, storage };

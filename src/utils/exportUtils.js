@@ -2,13 +2,13 @@ import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { format } from 'date-fns';
 
-export const exportToCSV = async (data, filename, headers) => {
+export const exportToCSV = async (data, filename, headerLabels, headerKeys) => {
   try {
-    let csvContent = headers.join(',') + '\n';
+    let csvContent = headerLabels.join(',') + '\n';
     
     data.forEach(row => {
-      const values = headers.map(header => {
-        const value = row[header.toLowerCase()] || '';
+      const values = headerKeys.map(key => {
+        const value = row[key] || '';
         return `"${value}"`;
       });
       csvContent += values.join(',') + '\n';
@@ -31,7 +31,8 @@ export const exportToCSV = async (data, filename, headers) => {
 };
 
 export const exportFuelsToCSV = async (fuels) => {
-  const headers = ['Date', 'Odometer', 'Liters', 'Cost', 'Price Per Liter', 'Mileage', 'Station'];
+  const headerLabels = ['Date', 'Odometer', 'Liters', 'Cost', 'Price Per Liter', 'Mileage', 'Station'];
+  const headerKeys = ['date', 'odometer', 'liters', 'cost', 'pricePerLiter', 'mileage', 'station'];
   const data = fuels.map(fuel => ({
     date: fuel.date ? format(new Date(fuel.date.seconds * 1000), 'yyyy-MM-dd') : '',
     odometer: fuel.odometer || '',
@@ -42,11 +43,12 @@ export const exportFuelsToCSV = async (fuels) => {
     station: fuel.station || ''
   }));
   
-  return await exportToCSV(data, 'fuels.csv', headers);
+  return await exportToCSV(data, 'fuels.csv', headerLabels, headerKeys);
 };
 
 export const exportServicesToCSV = async (services) => {
-  const headers = ['Date', 'Type', 'Description', 'Cost', 'Odometer', 'Next Service'];
+  const headerLabels = ['Date', 'Type', 'Description', 'Cost', 'Odometer', 'Next Service'];
+  const headerKeys = ['date', 'type', 'description', 'cost', 'odometer', 'nextService'];
   const data = services.map(service => ({
     date: service.date ? format(new Date(service.date.seconds * 1000), 'yyyy-MM-dd') : '',
     type: service.type || '',
@@ -56,11 +58,12 @@ export const exportServicesToCSV = async (services) => {
     nextService: service.nextServiceKm || ''
   }));
   
-  return await exportToCSV(data, 'services.csv', headers);
+  return await exportToCSV(data, 'services.csv', headerLabels, headerKeys);
 };
 
 export const exportExpensesToCSV = async (expenses) => {
-  const headers = ['Date', 'Category', 'Description', 'Amount'];
+  const headerLabels = ['Date', 'Category', 'Description', 'Amount'];
+  const headerKeys = ['date', 'category', 'description', 'amount'];
   const data = expenses.map(expense => ({
     date: expense.date ? format(new Date(expense.date.seconds * 1000), 'yyyy-MM-dd') : '',
     category: expense.category || '',
@@ -68,7 +71,7 @@ export const exportExpensesToCSV = async (expenses) => {
     amount: expense.amount || ''
   }));
   
-  return await exportToCSV(data, 'expenses.csv', headers);
+  return await exportToCSV(data, 'expenses.csv', headerLabels, headerKeys);
 };
 
 export const generateGPX = (ride) => {

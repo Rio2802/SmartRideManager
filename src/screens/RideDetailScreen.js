@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import MapView, { Polyline } from 'react-native-maps';
 import { formatDuration } from '../utils/calculations';
 import { exportRideToGPX } from '../utils/exportUtils';

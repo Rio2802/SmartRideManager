@@ -321,8 +321,17 @@ The project includes a GitHub Actions workflow that:
 - Lints the code
 - Builds the Expo app
 
+## Known Limitations
+
+### Offline Support
+This app uses the Firebase Web SDK which has limited offline persistence in React Native/Expo. An AsyncStorage caching layer provides basic offline functionality, but for production use with robust offline support, consider migrating to `@react-native-firebase` which uses the native Firebase SDK with full offline capabilities.
+
+### Web Version
+The web build has compatibility issues due to React Native modules. This is a mobile-first app designed for iOS/Android using Expo Go.
+
 ## Future Enhancements
 
+- Migrate to `@react-native-firebase` for full native offline support
 - Cloud-scheduled notifications using Firebase Cloud Functions
 - PDF export for comprehensive reports
 - Advanced chart filtering by date range

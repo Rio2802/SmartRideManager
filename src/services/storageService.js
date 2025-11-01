@@ -17,9 +17,14 @@ export const uploadReceipt = async (userId, bikeId, uri, filename) => {
   }
 };
 
-export const deleteReceipt = async (url) => {
+export const deleteReceipt = async (downloadURL) => {
   try {
-    const storageRef = ref(storage, url);
+    const path = downloadURL.split('/o/')[1]?.split('?')[0];
+    if (!path) {
+      throw new Error('Invalid download URL');
+    }
+    const decodedPath = decodeURIComponent(path);
+    const storageRef = ref(storage, decodedPath);
     await deleteObject(storageRef);
     return { success: true };
   } catch (error) {
